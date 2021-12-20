@@ -2,8 +2,10 @@ import {Body, Controller, Patch, Post} from "@nestjs/common";
 import {ChatService} from "./chat.service";
 import {Room} from "./schemas/room.schema";
 import {ApiOkResponse, ApiOperation} from "@nestjs/swagger";
-import {CreateDeviceDTO} from "../device/dto/create.device.dto";
+
 import {RoomDTO} from "./dto/room.dto";
+import {io} from 'socket.io-client'
+import {Message} from "./schemas/message.schema";
 
 @Controller("rooms")
 export class ChatController {
@@ -11,7 +13,7 @@ export class ChatController {
 
     @ApiOkResponse({
         description:"empty",
-        type: CreateDeviceDTO
+        type: RoomDTO
     })
     @ApiOperation({summary:"creating room"})
     @Post()
@@ -21,7 +23,6 @@ export class ChatController {
 
     @ApiOkResponse({
         description:"empty",
-        type: CreateDeviceDTO
     })
     @ApiOperation({summary:"add user"})
     @Patch()
@@ -31,22 +32,21 @@ export class ChatController {
 
     @ApiOkResponse({
         description:"empty",
-        type: CreateDeviceDTO
     })
     @ApiOperation({summary:"change status"})
     @Patch('users')
     async changeStatus(@Body() body:any):Promise<void>{
         return this.chatService.changeStatus(body)
     }
-    
-     @ApiOkResponse({
+
+    @ApiOkResponse({
         description:"empty",
         type: Message
     })
     @ApiOperation({summary:"add message"})
     @Post('message')
     async addMessage(@Body() body:any):Promise<void>{
-        const socket = io(process.env.SOCKET_URL, { transports: ['websocket'] });
-        socket.emit('room', {data: body.data, id: body.id});
+        const socket = io("http://localhost:4000", { transports: ['websocket'] });
+        socket.emit('room');
     }
 }
