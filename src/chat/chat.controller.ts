@@ -38,4 +38,15 @@ export class ChatController {
     async changeStatus(@Body() body:any):Promise<void>{
         return this.chatService.changeStatus(body)
     }
+    
+     @ApiOkResponse({
+        description:"empty",
+        type: Message
+    })
+    @ApiOperation({summary:"add message"})
+    @Post('message')
+    async addMessage(@Body() body:any):Promise<void>{
+        const socket = io(process.env.SOCKET_URL, { transports: ['websocket'] });
+        socket.emit('room', {data: body.data, id: body.id});
+    }
 }
