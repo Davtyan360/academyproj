@@ -13,6 +13,7 @@ import { FirebaseModule } from "./firebase/firebase.module";
 import { NotificationModule } from './notification/notification.module';
 import { HelperModule } from './helper/helper.module';
 import {ChatModule} from "./chat/chat.module";
+import {VehicleModule} from "./vehicle/vehicle.module";
 
 @Module({
   imports: [
@@ -25,7 +26,8 @@ import {ChatModule} from "./chat/chat.module";
     FirebaseModule,
     NotificationModule,
     HelperModule,
-    ChatModule
+    ChatModule,
+    VehicleModule,
   ],
   controllers: [AppController],
   providers: [AppService],
