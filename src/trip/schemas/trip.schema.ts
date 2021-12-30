@@ -1,6 +1,7 @@
 import * as mongoose from "mongoose";
 import { Schema } from "mongoose";
-import { TripStatus } from "./trip.status.enum";
+import { TripStatus } from "../trip.status.enum";
+import { PointSchema } from "./trip.point.schema";
 
 // ************for testing purposes************
 export const TripSchema = new mongoose.Schema(
@@ -16,26 +17,16 @@ export const TripSchema = new mongoose.Schema(
         date: Date,
       },
     ],
-    location: {
-      // TODO to be discussed
-      type: String,
-    },
+    // TODO think about geospatial indexes
+    location: PointSchema,
     // TODO change date name to departureName
     date: {
       type: Date,
       required: true,
     },
-    startPoint: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    endPoint: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    stops: [String],
+    startPoint: PointSchema,
+    endPoint: PointSchema,
+    stops: [PointSchema],
     freeSeatCount: {
       type: Number,
       required: true,
