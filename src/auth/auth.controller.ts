@@ -1,11 +1,11 @@
-import {Body, Controller, Get, Post, Req, UseGuards} from "@nestjs/common";
+import { Controller, Get, Req, UseGuards } from "@nestjs/common";
 
 import { AuthService } from "./auth.service";
 
 import { GoogleAuthGuard } from "./guards/google-auth.guard";
-import {ApiOkResponse, ApiOperation} from "@nestjs/swagger";
-import {CreateDeviceDTO} from "../device/dto/create.device.dto";
-import {AuthUserDto} from "./authUser.dto";
+import { ApiOkResponse, ApiOperation } from "@nestjs/swagger";
+import { CreateDeviceDTO } from "../device/dto/create.device.dto";
+import { AuthUserDto } from "./authUser.dto";
 
 @Controller("auth")
 export class AuthController {
@@ -13,23 +13,23 @@ export class AuthController {
 
   //no method body ???
   @ApiOkResponse({
-    description:"empty"
+    description: "empty",
   })
-  @ApiOperation({summary:"sign in with google"})
+  @ApiOperation({ summary: "sign in with google" })
   @UseGuards(GoogleAuthGuard)
   @Get("google")
   async signInWithGoogle(): Promise<void> {}
 
   @ApiOkResponse({
-    description:"empty",
-    type:AuthUserDto
+    description: "empty",
+    type: AuthUserDto,
   })
-  @ApiOperation({summary:"sign in with google and redirect"})
+  @ApiOperation({ summary: "sign in with google and redirect" })
   @UseGuards(GoogleAuthGuard)
-  @Post("google/redirect")
+  @Get("google/redirect")
   async signInWithGoogleRedirect(
-      @Body() req: AuthUserDto
+    @Req() { user }
   ): Promise<{ access_token: string }> {
-    return this.authService.signInWithGoogle(req);
+    return this.authService.signInWithGoogle(user);
   }
 }
