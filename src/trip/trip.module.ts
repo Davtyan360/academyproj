@@ -1,7 +1,7 @@
 import { Module } from "@nestjs/common";
 import { MongooseModule } from "@nestjs/mongoose";
 
-import { TripSchema } from "./trip.schema";
+import { TripSchema } from "./schemas/trip.schema";
 import { TripService } from "./trip.service";
 import { TripController } from "./trip.controller";
 

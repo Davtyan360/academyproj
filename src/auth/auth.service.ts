@@ -3,7 +3,7 @@ import { JwtService } from "@nestjs/jwt";
 
 import { UserService } from "../user/user.service";
 import { User } from "src/user/user.interface";
-import {AuthUserDto} from "./authUser.dto";
+import { AuthUserDto } from "./authUser.dto";
 
 @Injectable()
 export class AuthService {
@@ -30,7 +30,7 @@ export class AuthService {
     };
   }
 
-  async signInWithGoogle( user:AuthUserDto ) {
+  async signInWithGoogle(user: AuthUserDto) {
     if (!user) throw new BadRequestException();
     const { data, accessToken } = user;
     let userData = await this.usersService.findByEmail(data.email);
