@@ -5,13 +5,15 @@ import {Model} from "mongoose";
 import {User} from "../user/user.interface";
 import {RoomUserDto} from "./dto/roomUser.dto";
 import {RoomDTO} from "./dto/room.dto";
+import {Message, MessageDocument} from "./schemas/message.schema";
 
 @Injectable()
 export class ChatService {
 
     constructor(
         @InjectModel(Room.name) private roomModel: Model<RoomDocument>,
-        @InjectModel("User") private userModel: Model<User>
+        @InjectModel("User") private userModel: Model<User>,
+        @InjectModel(Message.name) private messageModel: Model<MessageDocument>
     ) {
     }
 
@@ -49,5 +51,11 @@ export class ChatService {
             {$set: {"users": users}},
             {upsert: true}
         );
+    }
+
+    public async getChatHistory(id1: string, id2: string): Promise<Array<Message>> {
+        return await this.messageModel.find({
+            $or: [{from: id1, to: id2}, {from: id2, to: id1}]
+        }).sort({createdAt: -1});
     }
 }

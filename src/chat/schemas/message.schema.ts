@@ -10,13 +10,13 @@ export class Message {
         description: 'Message sender',
     })
     @Prop({required: true})
-    from: mongoose.Schema.Types.ObjectId
+    from: string // mongoose.Schema.Types.ObjectId
 
     @ApiProperty({
         description: 'Message taker',
     })
     @Prop({required: true})
-    to: mongoose.Schema.Types.ObjectId
+    to: string // mongoose.Schema.Types.ObjectId
 
     @ApiProperty({
         description: 'Message text',

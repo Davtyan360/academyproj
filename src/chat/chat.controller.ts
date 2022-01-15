@@ -1,4 +1,4 @@
-import {Body, Controller, Patch, Post} from "@nestjs/common";
+import {Body, Controller, Patch, Post, Get} from "@nestjs/common";
 import {ChatService} from "./chat.service";
 import {Room} from "./schemas/room.schema";
 import {ApiOkResponse, ApiOperation} from "@nestjs/swagger";
@@ -48,5 +48,15 @@ export class ChatController {
     async addMessage(@Body() body:any):Promise<void>{
         const socket = io("http://localhost:4000", { transports: ['websocket'] });
         socket.emit('room');
+    }
+
+    @ApiOkResponse({
+        description:"empty",
+        type: Message, isArray: true
+    })
+    @ApiOperation({summary:"get messages"})
+    @Get('messages')
+    async getChatHistory(@Body() body:any):Promise<Array<Message>>{
+        return await this.chatService.getChatHistory(body.id1, body.id2);
     }
 }
